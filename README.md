@@ -233,6 +233,38 @@ Yes, `CLAUDE_CONFIG_DIR` is respected.
 
 Yes. Runs are idempotent. Each run replaces only its own tasks, writes at most one backup ever, and keeps the snapshot in `~/.claude/save-claude` rather than churning a file inside your repo.
 
+### Is save-claude free?
+
+Yes. MIT licensed, no account, no sign-up, no paid tier. The source is about 1,800 lines of plain ES modules with zero runtime dependencies, so you can read all of it in an afternoon.
+
+### Does save-claude send my conversations anywhere?
+
+No. It makes no network calls at all. The only Node modules it imports are `fs`, `os`, `path`, `crypto`, `readline`, `url` and `child_process`, and the only external command it runs is `git check-ignore` to warn you when `.vscode/` is not ignored. Your chats never leave your machine.
+
+### How many Claude Code sessions can it restore at once?
+
+As many as you have open. Each becomes its own VSCode task and its own terminal. On a normal laptop the practical limit is how many terminals you want running, not anything in the tool.
+
+### Can I choose which chats reopen?
+
+Yes. Running bare `npx save-claude` opens a checkbox picker listing every live chat grouped by repo. Space toggles one, `a` selects all, `n` selects none, enter confirms. Use `npx save-claude --all` to skip the picker.
+
+### How do I know which chat is waiting for me?
+
+The statusline widget. `status: idle` in Claude Code's session registry means that chat has finished and wants your input, so the widget shows it as `waiting`. Run `npx save-claude list` for the same information in full.
+
+### What versions does save-claude need?
+
+Node 18.17 or newer. The session registry format is verified against Claude Code 2.1.270. Older Claude Code versions still work through the transcript timestamp fallback, less accurately.
+
+### Does save-claude work without VSCode?
+
+Partly. The snapshot is plain JSON in `~/.claude/save-claude` and `npx save-claude list` works anywhere. Automatic reopening needs VSCode, because it depends on `folderOpen` tasks. There is no equivalent hook in a bare terminal.
+
+### Does it work with Cursor, Windsurf or other VSCode forks?
+
+It should. They read `.vscode/tasks.json` and support `runOn: folderOpen` the same way. This has not been tested, so treat it as unverified rather than promised.
+
 ---
 
 ## Upgrading from version 1
