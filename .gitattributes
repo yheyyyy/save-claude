@@ -1,0 +1,6 @@
+# Ship LF regardless of core.autocrlf. A CRLF shebang in bin/save-claude.js
+# breaks "npx save-claude" on macOS and Linux with "bad interpreter".
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
